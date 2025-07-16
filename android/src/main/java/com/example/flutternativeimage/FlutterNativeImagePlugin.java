@@ -12,19 +12,15 @@ public class FlutterNativeImagePlugin implements FlutterPlugin, MethodChannel.Me
   private MethodChannel channel;
 
     @Override
-    public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
+    public void onAttachedToEngine(FlutterPluginBinding binding) {
         channel = new MethodChannel(binding.getBinaryMessenger(), "my_plugin");
         channel.setMethodCallHandler(this);
     }
     @Override
-    public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+    public void onDetachedFromEngine(FlutterPluginBinding binding) {
         if (channel != null) {
             channel.setMethodCallHandler(null);
             channel = null;
         }
-    }
-    @Override
-    public void onMethodCall(MethodCall call, Result result) {
-        // Handle method calls
     }
 }
