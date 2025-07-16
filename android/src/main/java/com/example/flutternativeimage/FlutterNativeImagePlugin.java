@@ -7,13 +7,13 @@ import io.flutter.plugin.common.MethodChannel;
 /**
  * FlutterNativeImagePlugin
  */
-public class FlutterNativeImagePlugin implements FlutterPlugin, MethodChannel.MethodCallHandler {
+public class FlutterNativeImagePlugin implements FlutterPlugin, MethodCallHandler {
   private static final String CHANNEL_NAME = "flutter_native_image";
   private MethodChannel channel;
 
     @Override
     public void onAttachedToEngine(FlutterPluginBinding binding) {
-        channel = new MethodChannel(binding.getBinaryMessenger(), "my_plugin");
+        channel = new MethodChannel(binding.getBinaryMessenger(), "flutter_native_image");
         channel.setMethodCallHandler(this);
     }
     @Override
@@ -22,5 +22,10 @@ public class FlutterNativeImagePlugin implements FlutterPlugin, MethodChannel.Me
             channel.setMethodCallHandler(null);
             channel = null;
         }
+    }
+
+    @Override
+    public void onMethodCall(MethodCall call, Result result) {
+        // Handle method calls
     }
 }
