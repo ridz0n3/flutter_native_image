@@ -10,16 +10,15 @@ import io.flutter.plugin.common.PluginRegistry;
 /**
  * FlutterNativeImagePlugin
  */
-public class FlutterNativeImagePlugin implements FlutterPlugin {
+public class FlutterNativeImagePlugin implements FlutterPlugin, MethodCallHandler {
   private static final String CHANNEL_NAME = "flutter_native_image";
   private MethodChannel channel;
-  /**
-   * Plugin registration.
-   */
-  public static void registerWith(PluginRegistry.Registrar registrar) {
-    final FlutterNativeImagePlugin plugin = new FlutterNativeImagePlugin();
-    plugin.setupChannel(registrar.messenger(), registrar.context());
-  }
+
+  @Override
+    public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
+        channel = new MethodChannel(binding.getBinaryMessenger(), "flutter_native_image");
+        channel.setMethodCallHandler(this);
+    }
 
   @Override
   public void onAttachedToEngine(FlutterPlugin.FlutterPluginBinding binding) {
