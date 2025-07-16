@@ -7,8 +7,8 @@ import io.flutter.plugin.common.MethodChannel;
 /**
  * FlutterNativeImagePlugin
  */
-public class FlutterNativeImagePlugin implements FlutterPlugin, MethodChannel.MethodCallHandler {
-    private lateinit var channel: MethodChannel
+public class FlutterNativeImagePlugin implements implements FlutterPlugin, MethodCallHandler {
+    private MethodChannel channel;
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter_native_image")
         channel.setMethodCallHandler(this)
