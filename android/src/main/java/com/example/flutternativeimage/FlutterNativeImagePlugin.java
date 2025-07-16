@@ -1,22 +1,44 @@
 package com.example.flutternativeimage;
 
+import android.content.Context;
+
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
-import io.flutter.plugin.common.MethodCall;
+import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodChannel;
+import io.flutter.plugin.common.PluginRegistry;
 
 /**
  * FlutterNativeImagePlugin
  */
-public class FlutterNativeImagePlugin implements implements FlutterPlugin, MethodCallHandler {
+public class FlutterNativeImagePlugin implements FlutterPlugin {
+    private static final String CHANNEL_NAME = "flutter_native_image";
     private MethodChannel channel;
-    override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter_native_image")
-        channel.setMethodCallHandler(this)
+    /**
+     * Plugin registration.
+     */
+    public static void registerWith(PluginRegistry.Registrar registrar) {
+        final FlutterNativeImagePlugin plugin = new FlutterNativeImagePlugin();
+        plugin.setupChannel(registrar.messenger(), registrar.context());
     }
-    override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
-        // Handle method calls
+
+    @Override
+    public void onAttachedToEngine(FlutterPlugin.FlutterPluginBinding binding) {
+        setupChannel(binding.getFlutterEngine().getDartExecutor(), binding.getApplicationContext());
     }
-    override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-        channel.setMethodCallHandler(null)
+
+    @Override
+    public void onDetachedFromEngine(FlutterPlugin.FlutterPluginBinding binding) {
+        teardownChannel();
+    }
+
+    private void setupChannel(BinaryMessenger messenger, Context context) {
+        channel = new MethodChannel(messenger, CHANNEL_NAME);
+        MethodCallHandlerImpl handler = new MethodCallHandlerImpl(context);
+        channel.setMethodCallHandler(handler);
+    }
+
+    private void teardownChannel() {
+        channel.setMethodCallHandler(null);
+        channel = null;
     }
 }
